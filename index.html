@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>论文去重</title>
+    <link rel="stylesheet" type="text/css" href="asset/bootstrap/4.4/bootstrap.min.css">
+</head>
+<body>
+<div id="paperDeduplicationBox">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
+        <a class="navbar-brand" href="#">论文去重</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#settingsModal">设置<span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#tutorialModal">教程</a>
+                </li>
+            </ul>
+            <!--            <form class="form-inline my-2 my-lg-0">-->
+            <!--                <input class="form-control mr-sm-2" type="search" placeholder="Search">-->
+            <!--                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+            <!--            </form>-->
+        </div>
+
+        <!-- 设置Modal -->
+        <div class="modal fade" id="settingsModal" data-backdrop="static" tabindex="-1" role="dialog"
+             aria-labelledby="settingsModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalTitle">设置</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>百度通用翻译api设置</h5>
+                        <div class="row">
+                            <div class="form-group col-12 col-lg-auto">
+                                <label>APP ID</label>
+                                <input type="text" class="form-control" v-model="appid">
+                            </div>
+                            <div class="form-group col-12 col-lg-auto">
+                                <label>密钥</label>
+                                <input type="text" class="form-control" v-model="key">
+                            </div>
+                        </div>
+                        <div class="">
+                            <h5>通用设置</h5>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12 col-lg-auto">
+                                <label>论文类型</label>
+                                <select class="form-control" v-model="from">
+                                    <option value="zh">中文</option>
+                                    <option value="en">英文</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-12 col-lg-auto">
+                                <label>去重级别</label>
+                                <select class="form-control" v-model="level">
+                                    <option value="1">简单</option>
+                                    <option value="2">中级</option>
+                                    <option value="3">高级</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" v-on:click="settingsSaveBtnClick">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 教程Modal -->
+        <div class="modal fade" id="tutorialModal" data-backdrop="static" tabindex="-1" role="dialog"
+             aria-labelledby="tutorialModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tutorialModalTitle">教程</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>百度翻译开放平台账号申请流程</p>
+                        <p>1.搜索百度翻译开放平台，点击“管理控制台”</p>
+                        <p>2.选择个人开发者，填写个人信息进行注册。</p>
+                        <p>3.选择高级版，进行实名认证。</p>
+                        <p>4.完成后再次点击“管理控制台”就能够看到个人的App ID和密钥。把ID和密钥复制到去重工具登录即可。</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </nav>
+
+    <div class="container">
+        <h1>论文去重</h1>
+        <div class="d-none d-lg-block">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" v-on:click="paperDeduplicationBtnClick">去重</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label>原文：</label>
+                    <!--                    <textarea class="form-control" rows="3" v-model="query"></textarea>-->
+                    <div contenteditable="true" class="form-control"
+                         style="height: auto;min-height: calc(6em + 1.5em + .75rem + 2px);" v-html="query"
+                         @input="query=$event.target.innerText"></div>
+                </div>
+            </div>
+            <div class="col-12 d-lg-none">
+                <div class="form-group text-lg-center">
+                    <button type="button" class="btn btn-primary" v-on:click="paperDeduplicationBtnClick">去重</button>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label>去重结果：</label>
+                    <!--                    <textarea class="form-control" rows="3" v-model="result"></textarea>-->
+                    <div contenteditable="true" class="form-control"
+                         style="height: auto;min-height: calc(6em + 1.5em + .75rem + 2px);" v-html="result"
+                         @input="result=$event.target.innerText"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="asset/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="asset/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="asset/popper.min.js"></script>
+<script type="text/javascript" src="asset/bootstrap/4.4/bootstrap.min.js"></script>
+<script type="text/javascript" src="asset/vue.js"></script>
+<script type="text/javascript" src="asset/axios.min.js"></script>
+<script type="text/javascript" src="asset/md5.js"></script>
+<script type="text/javascript" src="js/v-index.js"></script>
+</body>
+</html>
